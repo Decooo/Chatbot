@@ -15,6 +15,7 @@ public class MovieService {
 
 	public ModelAndView listMovies() {
 		var model = new ModelAndView("listMovies.html");
+		model.addObject("movies", movieRepository.findAll());
 		return model;
 	}
 }

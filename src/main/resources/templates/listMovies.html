@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,5 +7,29 @@
 </head>
 <body>
 To jest lista wszystkich filmów!
+<br/><br/><br/>
+
+<div class="moviesList">
+    <div th:if="${not #lists.isEmpty(movies)}">
+        <h2>Lista filmów</h2>
+
+        <table border="1">
+            <tr>
+                <td>L.p</td>
+                <td>Tytuł</td>
+                <td>Reżyser</td>
+                <td>Rok produkcji</td>
+            </tr>
+            <tr th:each="movie,iterStat : ${movies}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${movie.title}"></td>
+                <td th:text="${movie.director}"></td>
+                <td th:text="${movie.productionYear}"></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
 </body>
 </html>
