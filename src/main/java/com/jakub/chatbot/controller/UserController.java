@@ -14,7 +14,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@RequestMapping("/")
+	@RequestMapping(value = "/")
 	public ModelAndView mainPage(){
 		return userService.mainPage();
 	}
