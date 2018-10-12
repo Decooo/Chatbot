@@ -1,0 +1,23 @@
+
+.detailsMovie{
+    text-align:center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.comments{
+    text-align: center;
+}
+
+.rating{
+    font-weight: bold;
+}
+
+.contentRating{
+    padding: 0 70px;
+}
+
+.btnRating{
+    text-align: center;
+    margin: auto;
+}

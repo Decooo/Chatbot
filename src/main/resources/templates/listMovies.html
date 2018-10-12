@@ -19,12 +19,14 @@ To jest lista wszystkich filmów!
                 <td>Tytuł</td>
                 <td>Reżyser</td>
                 <td>Rok produkcji</td>
+                <td>Szczegóły</td>
             </tr>
             <tr th:each="movie,iterStat : ${movies}">
                 <td th:text="${iterStat.count}"></td>
                 <td th:text="${movie.title}"></td>
                 <td th:text="${movie.director}"></td>
                 <td th:text="${movie.productionYear}"></td>
+                <td><a th:href="@{/movie/list/__${movie.idMovie}__}">Więcej</a></td>
             </tr>
         </table>
 

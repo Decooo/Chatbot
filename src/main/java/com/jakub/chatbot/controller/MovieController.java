@@ -1,11 +1,9 @@
 package com.jakub.chatbot.controller;
 
+import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.service.MovieService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -22,4 +20,16 @@ public class MovieController {
 	public ModelAndView listMovies(){
 		return movieService.listMovies();
 	}
+
+	@RequestMapping(value = "/list/{id}", method = RequestMethod.GET)
+	public ModelAndView getMovie(@PathVariable("id") int idMovie) throws NotFoundException {
+		return movieService.getMovie(idMovie);
+	}
+
+	@RequestMapping(value = "/list/{id}/marking", method = RequestMethod.GET)
+	public ModelAndView markingMovie(@PathVariable("id") int idMovie) throws NotFoundException {
+		return movieService.markingMovie(idMovie);
+	}
+
+
 }
