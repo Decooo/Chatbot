@@ -1,8 +1,10 @@
 package com.jakub.chatbot.controller;
 
+import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.service.MovieService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,5 +33,9 @@ public class MovieController {
 		return movieService.markingMovie(idMovie);
 	}
 
+	@RequestMapping(value = "/list/{id}/marking/send", method = RequestMethod.POST)
+	public ModelAndView sendMarking(@PathVariable("id") int idMovie, @ModelAttribute(value = "rating") Rating rating){
+		return movieService.sendMarking(rating,idMovie);
+	}
 
 }

@@ -1,10 +1,49 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Ocenianie</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
-Strona do oceniania filmu
+
+<div class="detailsMovie">
+    <br/><br/>
+    Oceniasz film "<span th:text="${movie.title}"></span>" w reżyserii <span th:text="${movie.director}"></span><br/>
+</div>
+<br/><br/><br/>
+
+<div class="container">
+    <img th:src="@{/img/bot.png}"  alt="Avatar" style="width:100%;">
+    <p>Hej! Jak Ci się podobał film?</p>
+</div>
+
+<div class="container darker">
+    <img th:src="@{/img/human.png}" alt="Avatar" class="right" style="width:100%;">
+    <p>Hej. Był bardzo dobry </p>
+</div>
+
+<div class="container">
+    <img th:src="@{/img/bot.png}" alt="Avatar" style="width:100%;">
+    <p>A jak ocenisz grę aktorów?</p>
+</div>
+
+<div class="container darker">
+    <img th:src="@{/img/human.png}" alt="Avatar" class="right" style="width:100%;">
+    <p>Jeden z najlepiej zagranych aktorsko filmów jaki ostatnio widziałem. Jakubik, Gajos, Woronowicz, Kot, Cielecka (wspaniała), Zmijewski no i Gierszał - rewelacja.</p>
+</div>
+
+
+<div class="formMarking">
+    <form action="#" th:action="@{__${#httpServletRequest.requestURI}__/send}" th:object="${rating}" method="post">
+        <input type="text" th:field="*{contentRating}"/>
+
+        <input type="submit" value="Wyślij" class="btn btn-primary"/></br>
+    </form>
+</div>
+
 </body>
 </html>
