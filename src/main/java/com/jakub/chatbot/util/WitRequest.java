@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class WitRequest {
 
 	public void doRequest(String message){
 		try {
+			message = URLEncoder.encode(message, "UTF-8").replace("+", "%20");
 			URL url = new URL("https://api.wit.ai/message?v=20170218&q=" + message);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
@@ -32,8 +33,6 @@ public class WitRequest {
 			}
 
 			conn.disconnect();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

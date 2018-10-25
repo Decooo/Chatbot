@@ -4,16 +4,10 @@ import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.repository.MovieRepository;
 import com.jakub.chatbot.repository.RatingRepository;
+import com.jakub.chatbot.util.SentimentAnalysis;
 import com.jakub.chatbot.util.WitRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 @Service
 public class MovieService {
@@ -48,6 +42,11 @@ public class MovieService {
 		var movie = movieRepository.findById(idMovie);
 		if (!movie.isPresent()) throw new NotFoundException("Nie znaleziono filmu!");
 
+		SentimentAnalysis turney = new SentimentAnalysis();
+		turney.analysis("to film na 8-9*, bo i świetne zdjęcia (wielka inwencja operatora), i {dobry} montaż, czyli znakomite wyczucie kiedy ciąć, sceny prawdziwie filmowe, niewymagające dużo dialogów, bo tak są mocne - np. scena z trumną, kapitalne przeplatanie wizji z realnością na końcu, wątek walki duchowej z odbiciem w lustrze (raz to anioł, raz diabeł) - reżyser świetnie wymyslił mnóstwo scen, sa treściwe, plastyczne, pełne znaczenia, zaciekawiające (popychające akcję do przodu i wzmacniające emocje)! Naprawdę, w bardzo realny świat nas wprowadził, przekonał do niego że wreszcie nie patrzyłem zezem by wyłuskać słabości warsztatowe czy artystyczne...");
+//		turney.analysis("zdjęcia były bardzo dobre");
+
+
 		model.addObject("movie", movie.get());
 		model.addObject("rating", new Rating());
 		return model;
@@ -57,7 +56,7 @@ public class MovieService {
 		var model = new ModelAndView("redirect:/movie/list/" + idMovie + "/marking");
 
 		var witRequest = new WitRequest();
-		System.out.println("Response: " + witRequest.doRequest(rating.getContentRating()));
+		witRequest.doRequest(rating.getContentRating());
 
 		System.out.println("Treść wiadomości: " + rating.getContentRating());
 		rating.setContentRating("");
