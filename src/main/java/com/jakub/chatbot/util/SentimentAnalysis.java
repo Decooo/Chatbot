@@ -10,11 +10,13 @@ import java.util.HashMap;
 
 public class SentimentAnalysis {
 
+	private static ArrayList<String> phraseList = new ArrayList<>();
+
 	public double analysis(String opinion) {
 		//TODO do phrase list
 		var wordList = separationWordInSentences(opinion);
 		var phrase = doPhraseList(wordList);
-
+		phrase.forEach(p -> System.out.println("p = " + p));
 		//TODO sentiment analysis
 
 		//TODO return result
@@ -23,13 +25,19 @@ public class SentimentAnalysis {
 	}
 
 	private ArrayList<String> doPhraseList(ArrayList<String[]> wordList) {
-		var phraseList = new ArrayList<String>();
-
+		phraseList.clear();
 		for (String[] aWordList : wordList) {
 			var stemList = stemming(new ArrayList<>(Arrays.asList(aWordList)));
-			stemList.forEach(a -> System.out.println("a.toString() = " + a.toString()));
-		}
+			var tags = new ArrayList<String>();
+			var words = new ArrayList<String>();
 
+			for (var stem : stemList) {
+				String[] pairs = stem.toString().substring(1, stem.toString().length() - 1).split(",");
+				tags.add(pairs[0].split("=")[1]);
+				words.add(pairs[1].split("=")[1]);
+			}
+			checkPhrase(tags, words);
+		}
 		return phraseList;
 	}
 
@@ -72,6 +80,40 @@ public class SentimentAnalysis {
 		} else return tags;
 	}
 
+	public void checkPhrase(ArrayList<String> tags, ArrayList<String> words) {
+		// First ADJ, SUBST/GER, anything
+		for (int i = 0; i < tags.size() - 1; ++i) {
+			if ("adj".equals(tags.get(i).substring(0, 3)) && "subst".equals(tags.get(i + 1))) {
+				phraseList.add(words.get(i) + " " + words.get(i + 1));
+			} else if ("adj".equals(tags.get(i).substring(0, 3)) && "ger".equals(tags.get(i + 1))) {
+				phraseList.add(words.get(i) + " " + words.get(i + 1));
+			}
+		}
+		// First ADV, ADJ, NOT SUBST/GER
+		for (int i = 0; i < tags.size() - 2; ++i) {
+			if ("adv".equals(tags.get(i)) && "adj".equals(tags.get(i +1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+				phraseList.add(words.get(i) + " " + words.get(i + 1));
+			}
+		}
+		// First ADJ, ADJ, NOT SUBST/GER
+		for (int i = 0; i < tags.size() - 2; ++i) {
+			if ("adj".equals(tags.get(i).substring(0, 3)) && "adj".equals(tags.get(i +1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+				phraseList.add(words.get(i) + " " + words.get(i + 1));
+			}
+		}
+		// First SUBST/GER, ADJ, NOT SUBST/GER
+		for (int i = 0; i < tags.size() - 2; ++i) {
+			if (("subst".equals(tags.get(i)) || "ger".equals(tags.get(i))) && "adj".equals(tags.get(i +1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+				phraseList.add(words.get(i) + " " + words.get(i + 1));
+			}
+		}
+		// First ADV, VERB
+		for (int i = 0; i < tags.size() - 1; ++i) {
+			if ("adv".equals(tags.get(i)) && "verb".equals(tags.get(i + 1))) {
+				phraseList.add(words.get(i) + " " + words.get(i + 1));
+			}
+		}
+	}
 
 	private ArrayList<String[]> separationWordInSentences(String text) {
 		text = separationSentences(text);
