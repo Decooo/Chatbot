@@ -4,9 +4,13 @@ import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.service.MovieService;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/movie")
@@ -29,7 +33,7 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/list/{id}/marking", method = RequestMethod.GET)
-	public ModelAndView markingMovie(@PathVariable("id") int idMovie) throws NotFoundException {
+	public ModelAndView markingMovie(@PathVariable("id") int idMovie) throws NotFoundException, IOException {
 		return movieService.markingMovie(idMovie);
 	}
 

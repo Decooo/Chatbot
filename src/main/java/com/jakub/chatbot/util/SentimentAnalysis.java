@@ -4,6 +4,7 @@ import morfologik.stemming.IStemmer;
 import morfologik.stemming.WordData;
 import morfologik.stemming.polish.PolishStemmer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,16 +13,47 @@ public class SentimentAnalysis {
 
 	private static ArrayList<String> phraseList = new ArrayList<>();
 
-	public double analysis(String opinion) {
-		//TODO do phrase list
+	public double analysis(String opinion) throws IOException {
 		var wordList = separationWordInSentences(opinion);
 		var phrase = doPhraseList(wordList);
-		phrase.forEach(p -> System.out.println("p = " + p));
-		//TODO sentiment analysis
+		return countEmotionsInPhrase(phrase);
+	}
 
-		//TODO return result
+	private double countEmotionsInPhrase(ArrayList<String> phrases) throws IOException {
+		HashMap<String, String> emotions = CSVReader.getInstance().getEmotions();
 
-		return 0.00;
+		double positivePoints = 0;
+		double negativePoints = 0;
+
+		for (String phrase : phrases) {
+			String[] pairs = phrase.split(" ");
+			int valueWord1 = getValue(emotions.getOrDefault(pairs[0], ""));
+			int valueWord2 = getValue(emotions.getOrDefault(pairs[1], ""));
+
+			if ((valueWord1 >= 0 && valueWord2 >= 0) || (valueWord1 <= 0 && valueWord2 <= 0)) {
+				if (valueWord1 + valueWord2 > 0) {
+					positivePoints += (valueWord1 + valueWord2);
+				} else negativePoints += (valueWord1 + valueWord2);
+			}
+		}
+
+		System.out.println("negativePoints = " + negativePoints);
+		System.out.println("positivePoints = " + positivePoints);
+
+		double result  = (positivePoints / (negativePoints * -1 + positivePoints));
+		return Math.round(result * 100D) / 100D * 10;
+	}
+
+	private int getValue(String s) {
+		if (s.equalsIgnoreCase("+ m")) {
+			return ValueEmotion.STRONGPOSITIVE.getValue();
+		} else if (s.equalsIgnoreCase("+ s")) {
+			return ValueEmotion.WEAKPOSITIVE.getValue();
+		} else if (s.equalsIgnoreCase("- s")) {
+			return ValueEmotion.WEAKNEGATIVE.getValue();
+		} else if (s.equalsIgnoreCase("- m")) {
+			return ValueEmotion.STRONGNEGATIVE.getValue();
+		} else return ValueEmotion.NATURAL.getValue();
 	}
 
 	private ArrayList<String> doPhraseList(ArrayList<String[]> wordList) {
@@ -80,7 +112,7 @@ public class SentimentAnalysis {
 		} else return tags;
 	}
 
-	public void checkPhrase(ArrayList<String> tags, ArrayList<String> words) {
+	private void checkPhrase(ArrayList<String> tags, ArrayList<String> words) {
 		// First ADJ, SUBST/GER, anything
 		for (int i = 0; i < tags.size() - 1; ++i) {
 			if ("adj".equals(tags.get(i).substring(0, 3)) && "subst".equals(tags.get(i + 1))) {
@@ -91,19 +123,19 @@ public class SentimentAnalysis {
 		}
 		// First ADV, ADJ, NOT SUBST/GER
 		for (int i = 0; i < tags.size() - 2; ++i) {
-			if ("adv".equals(tags.get(i)) && "adj".equals(tags.get(i +1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+			if ("adv".equals(tags.get(i)) && "adj".equals(tags.get(i + 1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
 				phraseList.add(words.get(i) + " " + words.get(i + 1));
 			}
 		}
 		// First ADJ, ADJ, NOT SUBST/GER
 		for (int i = 0; i < tags.size() - 2; ++i) {
-			if ("adj".equals(tags.get(i).substring(0, 3)) && "adj".equals(tags.get(i +1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+			if ("adj".equals(tags.get(i).substring(0, 3)) && "adj".equals(tags.get(i + 1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
 				phraseList.add(words.get(i) + " " + words.get(i + 1));
 			}
 		}
 		// First SUBST/GER, ADJ, NOT SUBST/GER
 		for (int i = 0; i < tags.size() - 2; ++i) {
-			if (("subst".equals(tags.get(i)) || "ger".equals(tags.get(i))) && "adj".equals(tags.get(i +1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+			if (("subst".equals(tags.get(i)) || "ger".equals(tags.get(i))) && "adj".equals(tags.get(i + 1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
 				phraseList.add(words.get(i) + " " + words.get(i + 1));
 			}
 		}
@@ -142,69 +174,7 @@ public class SentimentAnalysis {
 
 }
 //	public void turneyAlgotithm() {
-//		// TODO code application logic here
-//
-//			// Now start the phrase fetching
-//			// done in JJ, NN/NNS - RB/RBR/RBS, JJ - JJ, JJ- NN/NNS, JJ - RB../, VB../ way
-//			String[] parse_array = simplified_parse.split("#");
-//			ArrayList tags = new ArrayList();
-//			ArrayList words = new ArrayList();
-//			// Initialize
-//			tags.add("a");
-//			words.add("a");
-//			// Done initializing the arraylist
-//			String[] med;
-//			String final_list="";
-//			int j =0;
-//			for(int ind=0;ind <parse_array.length;++ind){
-//				med = parse_array[ind].split(",");
-//				tags.clear();
-//				words.clear();
-//				for(j=0;j<med.length;++j){
-//					tags.add(med[j].split(" ")[0].trim());
-//					words.add(med[j].split(" ")[1].trim());
-//				}
-//				// Now pick up all the concerned phrases
-//				// First JJ, NN/NNS, anything
-//				for(j=0;j<tags.size()-1;++j){
-//					if("JJ".equals(tags.get(j)) && "NN".equals(tags.get(j+1))){
-//						final_list += words.get(j) + " " + words.get(j+1)+"#";
-//					}
-//					else if("JJ".equals(tags.get(j)) && "NNP".equals(tags.get(j+1))){
-//						final_list += words.get(j) + " " + words.get(j+1);
-//					}
-//				}
-//				// First RB/RBR.RBS, JJ, NOT NN/NNS
-//				for(j=0;j<tags.size()-2;++j){
-//					if(("RB".equals(tags.get(j)) || "RBR".equals(tags.get(j)) || "RBS".equals(tags.get(j)))  && "JJ".equals(tags.get(j+1)) && (!("NN".equals(tags.get(j+2))) && !("NNS".equals(tags.get(j+2))))){
-//						final_list += words.get(j) + " " + words.get(j+1)+"#";
-//					}
-//				}
-//
-//				// First JJ, JJ, NOT NN/NNS
-//				for(j=0;j<tags.size()-2;++j){
-//					if("JJ".equals(tags.get(j))  && "JJ".equals(tags.get(j+1)) && (!("NN".equals(tags.get(j+2))) && !("NNS".equals(tags.get(j+2))))){
-//						final_list += words.get(j) + " " + words.get(j+1)+"#";
-//					}
-//				}
-//
-//				// First NN/NNS, JJ, NOT NN/NNS
-//				for(j=0;j<tags.size()-2;++j){
-//					if(("NN".equals(tags.get(j)) || "NNS".equals(tags.get(j)))  && "JJ".equals(tags.get(j+1)) && (!("NN".equals(tags.get(j+2))) && !("NNS".equals(tags.get(j+2))))){
-//						final_list += words.get(j) + " " + words.get(j+1)+"#";
-//					}
-//				}
-//
-//				// First RB/RBR/RBS, VB/VBD/VBG/VBN
-//				for(j=0;j<tags.size()-1;++j){
-//					if(("RB".equals(tags.get(j)) || "RBR".equals(tags.get(j)) || "RBS".equals(tags.get(j)))  && ("VB".equals(tags.get(j+1)) || "VBN".equals(tags.get(j+1)) || "VBG".equals(tags.get(j+1)) || "VBD".equals(tags.get(j+1)))){
-//						final_list += words.get(j) + " " + words.get(j+1)+"#";
-//					}
-//				}
-//
-//			}
-//
-//
+
 //			// Yoooo!! Time to calculate the sentiments
 //			// The probabilities of phrases are done via Google
 //			// Google access is done via Selenium via Python RPC server!
