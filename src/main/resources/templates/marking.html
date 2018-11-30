@@ -36,6 +36,7 @@
     <p>Jeden z najlepiej zagranych aktorsko filmów jaki ostatnio widziałem. Jakubik, Gajos, Woronowicz, Kot, Cielecka (wspaniała), Zmijewski no i Gierszał - rewelacja.</p>
 </div>
 
+<p th:utext="${codeHtml}"></p>
 
 <div class="formMarking">
     <form action="#" th:action="@{__${#httpServletRequest.requestURI}__/send}" th:object="${rating}" method="post">

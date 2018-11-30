@@ -4,12 +4,15 @@ import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.service.MovieService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
@@ -33,13 +36,14 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/list/{id}/marking", method = RequestMethod.GET)
-	public ModelAndView markingMovie(@PathVariable("id") int idMovie) throws NotFoundException, IOException {
-		return movieService.markingMovie(idMovie);
+	public ModelAndView markingMovie(@PathVariable("id") int idMovie, Model model, HttpServletRequest request) throws NotFoundException, IOException {
+		return movieService.markingMovie(idMovie, model, request);
 	}
 
 	@RequestMapping(value = "/list/{id}/marking/send", method = RequestMethod.POST)
-	public ModelAndView sendMarking(@PathVariable("id") int idMovie, @ModelAttribute(value = "rating") Rating rating){
-		return movieService.sendMarking(rating,idMovie);
+	public ModelAndView sendMarking(@PathVariable("id") int idMovie, @ModelAttribute(value = "rating") Rating rating, RedirectAttributes redirectAttributes,
+									HttpServletRequest request){
+		return movieService.sendMarking(rating,idMovie,redirectAttributes, request);
 	}
 
 }
