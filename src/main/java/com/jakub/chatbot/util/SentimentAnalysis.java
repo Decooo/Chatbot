@@ -1,5 +1,6 @@
 package com.jakub.chatbot.util;
 
+import com.jakub.chatbot.util.enums.ValueEmotion;
 import morfologik.stemming.IStemmer;
 import morfologik.stemming.WordData;
 import morfologik.stemming.polish.PolishStemmer;

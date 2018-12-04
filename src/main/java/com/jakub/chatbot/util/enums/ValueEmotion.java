@@ -1,4 +1,4 @@
-package com.jakub.chatbot.util;
+package com.jakub.chatbot.util.enums;
 
 public enum ValueEmotion {
 

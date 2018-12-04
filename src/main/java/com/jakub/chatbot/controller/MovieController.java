@@ -26,7 +26,7 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listMovies(){
+	public ModelAndView listMovies() {
 		return movieService.listMovies();
 	}
 
@@ -36,14 +36,14 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/list/{id}/marking", method = RequestMethod.GET)
-	public ModelAndView markingMovie(@PathVariable("id") int idMovie, Model model, HttpServletRequest request) throws NotFoundException, IOException {
+	public ModelAndView markingMovie(@PathVariable("id") int idMovie, Model model , HttpServletRequest request) throws NotFoundException, IOException {
 		return movieService.markingMovie(idMovie, model, request);
 	}
 
 	@RequestMapping(value = "/list/{id}/marking/send", method = RequestMethod.POST)
 	public ModelAndView sendMarking(@PathVariable("id") int idMovie, @ModelAttribute(value = "rating") Rating rating, RedirectAttributes redirectAttributes,
-									HttpServletRequest request){
-		return movieService.sendMarking(rating,idMovie,redirectAttributes, request);
+									HttpServletRequest request) throws NotFoundException {
+		return movieService.sendMarking(rating, idMovie, redirectAttributes, request);
 	}
 
 }

@@ -4,6 +4,8 @@ import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.repository.MovieRepository;
 import com.jakub.chatbot.repository.RatingRepository;
+import com.jakub.chatbot.util.AnalysisDialog;
+import com.jakub.chatbot.util.DialogProgress;
 import com.jakub.chatbot.util.WitRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -50,29 +52,36 @@ public class MovieService {
 		modelAndView.addObject("movie", movie.get());
 		modelAndView.addObject("rating", new Rating());
 
-		String code = String.valueOf(model.asMap().getOrDefault("codeHtml", ""));
+		DialogProgress dialogProgress = (DialogProgress) model.asMap().getOrDefault("dialogProgress", null);
+		dialogProgress = checkInitializeDialogProgress(dialogProgress);
+		modelAndView.addObject("codeHtml", dialogProgress.getCodeHtml());
+
 		HttpSession session = request.getSession(true);
-		session.setAttribute("codeHtml", code);
+		session.setAttribute("dialogProgress", dialogProgress);
 		return modelAndView;
 	}
 
-	public ModelAndView sendMarking(Rating rating, int idMovie, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public ModelAndView sendMarking(Rating rating, int idMovie, RedirectAttributes redirectAttributes, HttpServletRequest request) throws NotFoundException {
 		var modelAndView = new ModelAndView("redirect:/movie/list/" + idMovie + "/marking");
-
 		HttpSession session = request.getSession(true);
-		String oldCodeHtml = (String) session.getAttribute("codeHtml");
-		if (oldCodeHtml.equalsIgnoreCase("null")) oldCodeHtml = "";
+
+		DialogProgress dialogProgress = (DialogProgress) session.getAttribute("dialogProgress");
+		dialogProgress = checkInitializeDialogProgress(dialogProgress);
 
 		var witRequest = new WitRequest();
-		//witRequest.doRequest(rating.getContentRating());
+		AnalysisDialog.analysis(witRequest.doRequest(rating.getContentRating()), dialogProgress);
 
-		String codeHtml = oldCodeHtml + " <div class=\"container darker\">\n" +
-				"    <img src=\"/img/human.png\" alt=\"Avatar\" class=\"right\" style=\"width:100%;\">\n" +
-				"    <p>Kod dołączony za pomocą Stringa</p>\n" +
-				"	 </div>";
-
-		redirectAttributes.addFlashAttribute("codeHtml", codeHtml);
+		redirectAttributes.addFlashAttribute("codeHtml", dialogProgress.getCodeHtml());
+		redirectAttributes.addFlashAttribute("dialogProgress", dialogProgress);
 		rating.setContentRating("");
 		return modelAndView;
+	}
+
+	private DialogProgress checkInitializeDialogProgress(DialogProgress dialogProgress) throws NotFoundException {
+		if (dialogProgress == null) {
+			dialogProgress = new DialogProgress();
+			AnalysisDialog.startDialog(dialogProgress);
+		}
+		return dialogProgress;
 	}
 }

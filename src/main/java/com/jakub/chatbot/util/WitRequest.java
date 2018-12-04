@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 
 public class WitRequest {
 
-	public void doRequest(String message){
+	public String doRequest(String message) {
 		try {
 			message = URLEncoder.encode(message, "UTF-8").replace("+", "%20");
 			URL url = new URL("https://api.wit.ai/message?v=20170218&q=" + message);
@@ -26,15 +26,19 @@ public class WitRequest {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					(conn.getInputStream())));
 
-			String response;
+			String temp;
+			StringBuilder response = new StringBuilder();
 			System.out.println("Output from Server .... \n");
-			while ((response = br.readLine()) != null) {
-				System.out.println(response);
+			while ((temp = br.readLine()) != null) {
+				System.out.println(temp);
+				response.append(temp);
 			}
 
 			conn.disconnect();
+			return String.valueOf(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return "";
 	}
 }
