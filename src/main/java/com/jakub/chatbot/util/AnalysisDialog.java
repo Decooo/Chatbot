@@ -8,8 +8,10 @@ import java.util.Random;
 
 public class AnalysisDialog {
 
-	public static void analysis(String response, DialogProgress dialogProgress) {
-		System.out.println("response = " + response);
+	public static void analysis(String messaging, DialogProgress dialogProgress) {
+		WitRequest request = new WitRequest();
+		String response = request.doRequest(messaging);
+
 		dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.userCode("Testowa"));
 	}
 

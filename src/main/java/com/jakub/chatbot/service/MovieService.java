@@ -6,7 +6,6 @@ import com.jakub.chatbot.repository.MovieRepository;
 import com.jakub.chatbot.repository.RatingRepository;
 import com.jakub.chatbot.util.AnalysisDialog;
 import com.jakub.chatbot.util.DialogProgress;
-import com.jakub.chatbot.util.WitRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,8 +67,7 @@ public class MovieService {
 		DialogProgress dialogProgress = (DialogProgress) session.getAttribute("dialogProgress");
 		dialogProgress = checkInitializeDialogProgress(dialogProgress);
 
-		var witRequest = new WitRequest();
-		AnalysisDialog.analysis(witRequest.doRequest(rating.getContentRating()), dialogProgress);
+		AnalysisDialog.analysis(rating.getContentRating(), dialogProgress);
 
 		redirectAttributes.addFlashAttribute("codeHtml", dialogProgress.getCodeHtml());
 		redirectAttributes.addFlashAttribute("dialogProgress", dialogProgress);

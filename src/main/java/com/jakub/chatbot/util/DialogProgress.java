@@ -24,29 +24,29 @@ public class DialogProgress {
 	}
 
 	private void doQuestionsActingList() {
-		questionsActing.add("Pytanie gra aktorska 1");
-		questionsActing.add("Pytanie gra aktorska 2");
-		questionsActing.add("Pytanie gra aktorska 3");
-		questionsActing.add("Pytanie gra aktorska 4");
-		questionsActing.add("Pytanie gra aktorska 5");
+		questionsActing.add("Co sądzisz o grze aktorskiej?");
+		questionsActing.add("Jak ocenisz grę głównego bohatera?");
+		questionsActing.add("Która rola najbardziej Ci się podobała?");
+		questionsActing.add("Jak oceniasz grę aktorów?");
+		questionsActing.add("jak ocenisz grę postaci drugoplanowych?");
 		Collections.shuffle(questionsActing);
 	}
 
 	private void doQuestionsStoryList() {
-		questionsStory.add("Pytanie fabuła 1");
-		questionsStory.add("Pytanie fabuła 2");
-		questionsStory.add("Pytanie fabuła 3");
-		questionsStory.add("Pytanie fabuła 4");
-		questionsStory.add("Pytanie fabuła 5");
+		questionsStory.add("Jak oceniasz fabułę filmu?");
+		questionsStory.add("Jak oceniasz historię przedstawioną w filmie?");
+		questionsStory.add("Czy podobało Ci się zakończenie historii?");
+		questionsStory.add("Czy fabuła filmu Cię zainteresowała?");
+		questionsStory.add("Jaka jest Twoja opinia o fabule przedstwionej w filmie?");
 		Collections.shuffle(questionsStory);
 	}
 
 	private void doQuestionsSpecialEffectsList() {
-		questionsSpecialEffects.add("Pytanie efekty specjalne 1");
-		questionsSpecialEffects.add("Pytanie efekty specjalne 2");
-		questionsSpecialEffects.add("Pytanie efekty specjalne 3");
-		questionsSpecialEffects.add("Pytanie efekty specjalne 4");
-		questionsSpecialEffects.add("Pytanie efekty specjalne 5");
+		questionsSpecialEffects.add("Jak oceniasz efekty specjalne przedstawione w filmie?");
+		questionsSpecialEffects.add("Czy podobała Ci się scenografia?");
+		questionsSpecialEffects.add("Czy muzyka była dobrze dobrana?");
+		questionsSpecialEffects.add("Czy montaż został dobrze zrobiony?");
+		questionsSpecialEffects.add("Czy efekty specjalne zrobiły na Tobie wrażenie?");
 		Collections.shuffle(questionsSpecialEffects);
 	}
 

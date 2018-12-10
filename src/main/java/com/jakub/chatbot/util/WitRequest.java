@@ -28,12 +28,10 @@ public class WitRequest {
 
 			String temp;
 			StringBuilder response = new StringBuilder();
-			System.out.println("Output from Server .... \n");
 			while ((temp = br.readLine()) != null) {
-				System.out.println(temp);
-				response.append(temp);
+				response.append(temp).append("\n");
 			}
-
+			System.out.println("response = " + response);
 			conn.disconnect();
 			return String.valueOf(response);
 		} catch (IOException e) {
