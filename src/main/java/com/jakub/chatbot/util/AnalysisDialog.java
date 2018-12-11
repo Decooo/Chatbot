@@ -2,15 +2,26 @@ package com.jakub.chatbot.util;
 
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.util.enums.CategoryQuestions;
+import com.jakub.chatbot.util.jsonEntity.Entities;
+import com.jakub.chatbot.util.jsonEntity.Value;
+import com.jakub.chatbot.util.jsonEntity.WitResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class AnalysisDialog {
 
-	public static void analysis(String messaging, DialogProgress dialogProgress) {
+	public static void analysis(String messaging, DialogProgress dialogProgress) throws JSONException {
 		WitRequest request = new WitRequest();
 		String response = request.doRequest(messaging);
+
+		//HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+		WitResponse witResponse = doWitResponse(response);
+		System.out.println("witResponse = " + witResponse.toString());
 
 		dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.userCode("Testowa"));
 	}
@@ -51,5 +62,37 @@ public class AnalysisDialog {
 			int index = generator.nextInt(categoryList.size() - 1);
 			dialogProgress.setCurrentCategoryQuestions(categoryList.get(index));
 		}
+	}
+
+	private static WitResponse doWitResponse(String response) throws JSONException {
+		JSONObject jsonObject = new JSONObject(response);
+		WitResponse witResponse = new WitResponse();
+		witResponse.setText(jsonObject.optString("_text"));
+		witResponse.setMsg_id(jsonObject.optString("msg_id"));
+		JSONObject entitiesObject = jsonObject.getJSONObject("entities");
+		Iterator<String> keys = entitiesObject.keys();
+		ArrayList<Entities> entitiesArrayList = new ArrayList<>();
+
+		while (keys.hasNext()) {
+			String key = keys.next();
+			Entities entities = new Entities();
+			entities.setName(key);
+			JSONArray jsonArrayValue = entitiesObject.getJSONArray(key);
+			ArrayList<Value> valueArrayList = new ArrayList<>();
+			for (int i = 0; i < jsonArrayValue.length(); i++) {
+				JSONObject jsonValue = jsonArrayValue.getJSONObject(i);
+				Value value = new Value();
+				value.setConfidence(jsonValue.optDouble("confidence"));
+				value.setType(jsonValue.optString("type"));
+				value.setValue(jsonValue.optString("value"));
+				value.setSuggested(jsonValue.optString("suggested"));
+				valueArrayList.add(value);
+			}
+			entities.setValueArrayList(valueArrayList);
+			entitiesArrayList.add(entities);
+		}
+
+		witResponse.setEntitiesArrayList(entitiesArrayList);
+		return witResponse;
 	}
 }

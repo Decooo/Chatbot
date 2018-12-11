@@ -6,6 +6,7 @@ import com.jakub.chatbot.repository.MovieRepository;
 import com.jakub.chatbot.repository.RatingRepository;
 import com.jakub.chatbot.util.AnalysisDialog;
 import com.jakub.chatbot.util.DialogProgress;
+import org.json.JSONException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -60,7 +61,7 @@ public class MovieService {
 		return modelAndView;
 	}
 
-	public ModelAndView sendMarking(Rating rating, int idMovie, RedirectAttributes redirectAttributes, HttpServletRequest request) throws NotFoundException {
+	public ModelAndView sendMarking(Rating rating, int idMovie, RedirectAttributes redirectAttributes, HttpServletRequest request) throws NotFoundException, JSONException {
 		var modelAndView = new ModelAndView("redirect:/movie/list/" + idMovie + "/marking");
 		HttpSession session = request.getSession(true);
 

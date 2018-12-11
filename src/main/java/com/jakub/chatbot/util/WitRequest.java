@@ -29,7 +29,7 @@ public class WitRequest {
 			String temp;
 			StringBuilder response = new StringBuilder();
 			while ((temp = br.readLine()) != null) {
-				response.append(temp).append("\n");
+				response.append(temp);
 			}
 			System.out.println("response = " + response);
 			conn.disconnect();

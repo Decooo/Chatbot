@@ -3,6 +3,7 @@ package com.jakub.chatbot.controller;
 import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.service.MovieService;
+import org.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,7 +43,7 @@ public class MovieController {
 
 	@RequestMapping(value = "/list/{id}/marking/send", method = RequestMethod.POST)
 	public ModelAndView sendMarking(@PathVariable("id") int idMovie, @ModelAttribute(value = "rating") Rating rating, RedirectAttributes redirectAttributes,
-									HttpServletRequest request) throws NotFoundException {
+									HttpServletRequest request) throws NotFoundException, JSONException {
 		return movieService.sendMarking(rating, idMovie, redirectAttributes, request);
 	}
 
