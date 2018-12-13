@@ -47,4 +47,8 @@ public class MovieController {
 		return movieService.sendMarking(rating, idMovie, redirectAttributes, request);
 	}
 
+	@RequestMapping(value = "/list/{id}/summary", method = RequestMethod.GET)
+	public ModelAndView summaryMarking(@PathVariable("id") int idMovie, Model model , HttpServletRequest request) throws NotFoundException, IOException {
+		return movieService.summaryMarking(idMovie, model, request);
+	}
 }

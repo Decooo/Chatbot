@@ -6,6 +6,7 @@ import com.jakub.chatbot.repository.MovieRepository;
 import com.jakub.chatbot.repository.RatingRepository;
 import com.jakub.chatbot.util.AnalysisDialog;
 import com.jakub.chatbot.util.DialogProgress;
+import com.jakub.chatbot.util.SentimentAnalysis;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -58,7 +59,19 @@ public class MovieService {
 
 		HttpSession session = request.getSession(true);
 		session.setAttribute("dialogProgress", dialogProgress);
+
+		if (dialogProgress.getRatingReady())
+			modelAndView = new ModelAndView("redirect:/movie/list/" + idMovie + "/summary");
+
 		return modelAndView;
+	}
+
+	private DialogProgress checkInitializeDialogProgress(DialogProgress dialogProgress) throws NotFoundException {
+		if (dialogProgress == null) {
+			dialogProgress = new DialogProgress();
+			AnalysisDialog.startDialog(dialogProgress);
+		}
+		return dialogProgress;
 	}
 
 	public ModelAndView sendMarking(Rating rating, int idMovie, RedirectAttributes redirectAttributes, HttpServletRequest request) throws NotFoundException, JSONException {
@@ -76,11 +89,20 @@ public class MovieService {
 		return modelAndView;
 	}
 
-	private DialogProgress checkInitializeDialogProgress(DialogProgress dialogProgress) throws NotFoundException {
-		if (dialogProgress == null) {
-			dialogProgress = new DialogProgress();
-			AnalysisDialog.startDialog(dialogProgress);
-		}
-		return dialogProgress;
+	public ModelAndView summaryMarking(int idMovie, Model model, HttpServletRequest request) throws NotFoundException, IOException {
+		var modelAndView = new ModelAndView("summary.html");
+		var movie = movieRepository.findById(idMovie);
+		if (!movie.isPresent()) throw new NotFoundException("Nie znaleziono filmu!");
+		modelAndView.addObject("movie", movie.get());
+
+		HttpSession session = request.getSession(true);
+		DialogProgress dialogProgress = (DialogProgress) session.getAttribute("dialogProgress");
+
+		modelAndView.addObject("content", dialogProgress.getContent());
+
+		SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
+		modelAndView.addObject("rating", sentimentAnalysis.analysis(dialogProgress.getContent()));
+
+		return modelAndView;
 	}
 }

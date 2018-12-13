@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Podsumowanie</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+</head>
+<body>
+
+<div class="detailsMovie">
+    <br/><br/>
+    Podsumowanie oceny filmu "<span th:text="${movie.title}"></span>" w reżyserii <span th:text="${movie.director}"></span><br/>
+</div>
+<br/><br/><br/>
+
+Opinia użytkownika:<br/>
+<span th:text="${content}"></span>
+
+<br/><br/>
+
+Ocena:
+<span th:text="${rating}"></span>/10
+
+
+</body>
+</html>

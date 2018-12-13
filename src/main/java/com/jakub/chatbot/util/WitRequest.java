@@ -31,7 +31,6 @@ public class WitRequest {
 			while ((temp = br.readLine()) != null) {
 				response.append(temp);
 			}
-			System.out.println("response = " + response);
 			conn.disconnect();
 			return String.valueOf(response);
 		} catch (IOException e) {
