@@ -20,17 +20,10 @@ public class AnalysisDialog {
 		Map<String, Double> sumConfidence = new HashMap();
 
 		if (messaging.length() >= 280) {
-			ArrayList<String> sentenceList = doSentenceList(messaging);
-			ArrayList<WitResponse> responseList = new ArrayList<>();
-			for (String aSentenceList : sentenceList) {
-				WitResponse witResponse = doWitResponse(request.doRequest(aSentenceList));
-				responseList.add(witResponse);
-			}
-
+			ArrayList<WitResponse> responseList = createResponseList(messaging, request);
 			for (WitResponse aResponseList : responseList) {
 				calculateSumConfidence(sumConfidence, aResponseList);
 			}
-
 		} else {
 			WitResponse witResponse = doWitResponse(request.doRequest(messaging));
 			calculateSumConfidence(sumConfidence, witResponse);
@@ -51,6 +44,16 @@ public class AnalysisDialog {
 			}
 		} else
 			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
+	}
+
+	private static ArrayList<WitResponse> createResponseList(String messaging, WitRequest request) throws JSONException {
+		ArrayList<String> sentenceList = doSentenceList(messaging);
+		ArrayList<WitResponse> responseList = new ArrayList<>();
+		for (String aSentenceList : sentenceList) {
+			WitResponse witResponse = doWitResponse(request.doRequest(aSentenceList));
+			responseList.add(witResponse);
+		}
+		return responseList;
 	}
 
 	private static String getMaxKey(Map<String, Double> sumConfidence) {
