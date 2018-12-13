@@ -9,14 +9,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class AnalysisDialog {
 
-	public static void analysis(String messaging, DialogProgress dialogProgress) throws JSONException {
+	public static void analysis(String messaging, DialogProgress dialogProgress) throws JSONException, NotFoundException {
+		dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.userCode(messaging));
 		WitRequest request = new WitRequest();
+
+		Map<String, Double> sumConfidence = new HashMap();
 
 		if (messaging.length() >= 280) {
 			ArrayList<String> sentenceList = doSentenceList(messaging);
@@ -25,15 +26,66 @@ public class AnalysisDialog {
 				WitResponse witResponse = doWitResponse(request.doRequest(aSentenceList));
 				responseList.add(witResponse);
 			}
-			//ANALIZA RESPONSE LIST
-			System.out.println("responseList.size() = " + responseList.size());
+
+			for (WitResponse aResponseList : responseList) {
+				calculateSumConfidence(sumConfidence, aResponseList);
+			}
+
 		} else {
 			WitResponse witResponse = doWitResponse(request.doRequest(messaging));
-			//ANALIZA WIT RESPONSE
+			calculateSumConfidence(sumConfidence, witResponse);
 		}
+		String maxKey = getMaxKey(sumConfidence);
 
+		if (!maxKey.equalsIgnoreCase("") && sumConfidence.get(maxKey) > 0.5 && maxKey.equalsIgnoreCase(dialogProgress.getCurrentCategoryQuestions())) {
+			setCompletedCategory(dialogProgress, maxKey);
+			dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
+			orLastCharContentIsDot(dialogProgress);
 
-		dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.userCode("Testowa"));
+			if (isEndConversation(dialogProgress)) {
+				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.endConversation());
+				dialogProgress.setRatingReady(true);
+			} else {
+				randomCategoryQuestion(dialogProgress);
+				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
+			}
+		} else
+			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
+	}
+
+	private static String getMaxKey(Map<String, Double> sumConfidence) {
+		if (sumConfidence.size() > 1) {
+			return Collections.max(sumConfidence.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
+		} else if (sumConfidence.size() == 1) return sumConfidence.entrySet().iterator().next().getKey();
+		else return "";
+	}
+
+	private static void orLastCharContentIsDot(DialogProgress dialogProgress) {
+		String content = dialogProgress.getContent().trim();
+		if (content.endsWith(".") || content.endsWith("?") || content.endsWith("!"))
+			dialogProgress.setContent(content + ".");
+	}
+
+	private static void setCompletedCategory(DialogProgress dialogProgress, String maxKey) {
+		if (maxKey.equalsIgnoreCase("Gra_aktorska")) dialogProgress.setActing(true);
+		else if (maxKey.equalsIgnoreCase("fabula")) dialogProgress.setStory(true);
+		else if (maxKey.equalsIgnoreCase("efekty_specjalne")) dialogProgress.setSpecialEffects(true);
+	}
+
+	private static void calculateSumConfidence(Map<String, Double> sumConfidence, WitResponse witResponse) {
+		for (Entities entitie : witResponse.getEntitiesArrayList()) {
+			double sum = 0;
+			for (Value value : entitie.getValueArrayList()) {
+				sum += value.getConfidence();
+			}
+			if (!sumConfidence.containsKey(entitie.getName())) {
+				sumConfidence.put(entitie.getName(), sum);
+			} else sumConfidence.replace(entitie.getName(), sumConfidence.get(entitie.getName()) + sum);
+		}
+	}
+
+	private static boolean isEndConversation(DialogProgress dialogProgress) {
+		return dialogProgress.getActing() && dialogProgress.getStory() && dialogProgress.getSpecialEffects();
 	}
 
 	private static ArrayList<String> doSentenceList(String messaging) {
@@ -91,12 +143,6 @@ public class AnalysisDialog {
 		return witResponse;
 	}
 
-	public static void startDialog(DialogProgress dialogProgress) throws NotFoundException {
-		randomCategoryQuestion(dialogProgress);
-		String question = randomQuestion(dialogProgress);
-		dialogProgress.setCodeHtml(HtmlCode.botCode(question));
-	}
-
 	private static String randomQuestion(DialogProgress dialogProgress) throws NotFoundException {
 		ArrayList<String> questionsList = new ArrayList<>();
 		if (dialogProgress.getCurrentCategoryQuestions().equals(CategoryQuestions.ACTING.getValue()))
@@ -127,5 +173,12 @@ public class AnalysisDialog {
 			int index = generator.nextInt(categoryList.size() - 1);
 			dialogProgress.setCurrentCategoryQuestions(categoryList.get(index));
 		}
+		dialogProgress.setNumberCurrentQuestions(0);
+	}
+
+	public static void startDialog(DialogProgress dialogProgress) throws NotFoundException {
+		randomCategoryQuestion(dialogProgress);
+		String question = randomQuestion(dialogProgress);
+		dialogProgress.setCodeHtml(HtmlCode.botCode(question));
 	}
 }

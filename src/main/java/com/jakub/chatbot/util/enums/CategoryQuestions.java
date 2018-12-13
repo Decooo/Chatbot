@@ -4,19 +4,19 @@ public enum CategoryQuestions {
 	ACTING {
 		@Override
 		public String getValue() {
-			return "ACTING";
+			return "Gra_aktorska";
 		}
 	},
 	STORY {
 		@Override
 		public String getValue() {
-			return "STORY";
+			return "fabula";
 		}
 	},
 	SPECIALEFFECTS {
 		@Override
 		public String getValue() {
-			return "SPECIALEFFECTS";
+			return "efekty_specjalne";
 		}
 	};
 

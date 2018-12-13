@@ -28,7 +28,7 @@ public class DialogProgress {
 		questionsActing.add("Jak ocenisz grę głównego bohatera?");
 		questionsActing.add("Która rola najbardziej Ci się podobała?");
 		questionsActing.add("Jak oceniasz grę aktorów?");
-		questionsActing.add("jak ocenisz grę postaci drugoplanowych?");
+		questionsActing.add("Jak ocenisz grę postaci drugoplanowych?");
 		Collections.shuffle(questionsActing);
 	}
 

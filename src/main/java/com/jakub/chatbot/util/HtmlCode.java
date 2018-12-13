@@ -16,4 +16,11 @@ public class HtmlCode {
 				"</div>";
 	}
 
+	static String endConversation() {
+		return "<div class=\"container\">\n" +
+				"	 <img src=\"/img/bot.png\" alt=\"Avatar\" style=\"width:100%;\">\n" +
+				"    <p>Dziękujemy za rozmowe. Aby zobaczyć ocenę przejdź do podsumowania!</p>\n" +
+				"</div>";
+	}
+
 }
