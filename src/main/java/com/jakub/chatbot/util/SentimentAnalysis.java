@@ -36,9 +36,7 @@ public class SentimentAnalysis {
 					positivePoints += (valueWord1 + valueWord2);
 				} else negativePoints += (valueWord1 + valueWord2);
 			}
-
 			System.out.println(pairs[0] + " " + pairs[1] + " | " + valueWord1 + " : " + valueWord2);
-
 		}
 
 		System.out.println("negativePoints = " + negativePoints);

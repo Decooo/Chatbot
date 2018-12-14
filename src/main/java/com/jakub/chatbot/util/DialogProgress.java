@@ -14,13 +14,18 @@ public class DialogProgress {
 	private ArrayList<String> questionsActing = new ArrayList<>();
 	private ArrayList<String> questionsStory = new ArrayList<>();
 	private ArrayList<String> questionsSpecialEffects = new ArrayList<>();
+	private ArrayList<String> questionsAuxiliary = new ArrayList<>();
 	private String currentCategoryQuestions;
 	private int numberCurrentQuestions = -1;
+
+	private int lengthOpinionOnSubject = 0;
+	private int numberCurrentQuestionAuxiliary = -1;
 
 	public DialogProgress() {
 		doQuestionsActingList();
 		doQuestionsStoryList();
 		doQuestionsSpecialEffectsList();
+		doQuestionsAuxiliary();
 	}
 
 	private void doQuestionsActingList() {
@@ -48,6 +53,39 @@ public class DialogProgress {
 		questionsSpecialEffects.add("Czy montaż został dobrze zrobiony?");
 		questionsSpecialEffects.add("Czy efekty specjalne zrobiły na Tobie wrażenie?");
 		Collections.shuffle(questionsSpecialEffects);
+	}
+
+	private void doQuestionsAuxiliary() {
+		questionsAuxiliary.add("Czy możesz rozwinąć swoją wypowiedź?");
+		questionsAuxiliary.add("Może powiesz coś więcej na ten temat?");
+		questionsAuxiliary.add("Rozwiń swoją odpowiedź");
+		questionsAuxiliary.add("Czy mogłbyś powiedzieć coś więcej na ten temat?");
+		questionsAuxiliary.add("Rozbuduj swoją odpowiedz");
+		Collections.shuffle(questionsAuxiliary);
+	}
+
+	public ArrayList<String> getQuestionsAuxiliary() {
+		return questionsAuxiliary;
+	}
+
+	public void setQuestionsAuxiliary(ArrayList<String> questionsAuxiliary) {
+		this.questionsAuxiliary = questionsAuxiliary;
+	}
+
+	public int getLengthOpinionOnSubject() {
+		return lengthOpinionOnSubject;
+	}
+
+	public void setLengthOpinionOnSubject(int lengthOpinionOnSubject) {
+		this.lengthOpinionOnSubject = lengthOpinionOnSubject;
+	}
+
+	public int getNumberCurrentQuestionAuxiliary() {
+		return numberCurrentQuestionAuxiliary;
+	}
+
+	public void setNumberCurrentQuestionAuxiliary(int numberCurrentQuestionAuxiliary) {
+		this.numberCurrentQuestionAuxiliary = numberCurrentQuestionAuxiliary;
 	}
 
 	public String getCurrentCategoryQuestions() {

@@ -31,19 +31,44 @@ public class AnalysisDialog {
 		String maxKey = getMaxKey(sumConfidence);
 
 		if (!maxKey.equalsIgnoreCase("") && sumConfidence.get(maxKey) > 0.5 && maxKey.equalsIgnoreCase(dialogProgress.getCurrentCategoryQuestions())) {
-			setCompletedCategory(dialogProgress, maxKey);
-			dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
-			orLastCharContentIsDot(dialogProgress);
+			if(dialogProgress.getLengthOpinionOnSubject() + messaging.length() >= 120){
+				setCompletedCategory(dialogProgress, maxKey);
+				dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
+				orLastCharContentIsDot(dialogProgress);
 
-			if (isEndConversation(dialogProgress)) {
-				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.endConversation());
-				dialogProgress.setRatingReady(true);
-			} else {
-				randomCategoryQuestion(dialogProgress);
-				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
+				if (isEndConversation(dialogProgress)) {
+					dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.endConversation());
+					dialogProgress.setRatingReady(true);
+				} else {
+					randomCategoryQuestion(dialogProgress);
+					dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
+				}
+				resetLengthOpinionOnSubject(dialogProgress);
+			}else{
+				dialogProgress.setLengthOpinionOnSubject(dialogProgress.getLengthOpinionOnSubject() + messaging.length());
+				dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
+				orLastCharContentIsDot(dialogProgress);
+				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestionAuxiliary(dialogProgress)));
 			}
+
 		} else
-			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
+			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCodeOffTopic(randomQuestion(dialogProgress)));
+	}
+
+	private static String randomQuestionAuxiliary(DialogProgress dialogProgress) throws NotFoundException {
+		ArrayList<String> questionsList = dialogProgress.getQuestionsAuxiliary();
+
+		if (questionsList.size() == 0) throw new NotFoundException("Nie znaleziono żadnych pytań");
+		else if (dialogProgress.getNumberCurrentQuestionAuxiliary() >= questionsList.size())
+			dialogProgress.setNumberCurrentQuestionAuxiliary(0);
+
+		dialogProgress.setNumberCurrentQuestionAuxiliary(dialogProgress.getNumberCurrentQuestionAuxiliary() + 1);
+		return questionsList.get(dialogProgress.getNumberCurrentQuestionAuxiliary());
+	}
+
+	private static void resetLengthOpinionOnSubject(DialogProgress dialogProgress) {
+		dialogProgress.setLengthOpinionOnSubject(0);
+		dialogProgress.setNumberCurrentQuestionAuxiliary(-1);
 	}
 
 	private static ArrayList<WitResponse> createResponseList(String messaging, WitRequest request) throws JSONException {
@@ -65,7 +90,7 @@ public class AnalysisDialog {
 
 	private static void orLastCharContentIsDot(DialogProgress dialogProgress) {
 		String content = dialogProgress.getContent().trim();
-		if (content.endsWith(".") || content.endsWith("?") || content.endsWith("!"))
+		if (!content.endsWith(".") || !content.endsWith("?") || !content.endsWith("!"))
 			dialogProgress.setContent(content + ".");
 	}
 

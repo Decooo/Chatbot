@@ -16,6 +16,14 @@ public class HtmlCode {
 				"</div>";
 	}
 
+	static String botCodeOffTopic(String message) {
+		return "<div class=\"container\">\n" +
+				"	 <img src=\"/img/bot.png\" alt=\"Avatar\" style=\"width:100%;\">\n" +
+				"    <p>Twoja odpowiedź jest nie na temat. Postaraj się udzielać bardziej dokładnych odpowiedzi.</p>\n" +
+				"    <p>" + message + "</p>\n" +
+				"</div>";
+	}
+
 	static String endConversation() {
 		return "<div class=\"container\">\n" +
 				"	 <img src=\"/img/bot.png\" alt=\"Avatar\" style=\"width:100%;\">\n" +
