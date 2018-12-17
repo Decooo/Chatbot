@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,21 +11,23 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
+<div layout:fragment="content" th:remove="tag">
 
-<div class="detailsMovie">
+    <div class="detailsMovie">
+        <br/><br/>
+        Podsumowanie oceny filmu "<span th:text="${movie.title}"></span>" w reżyserii <span
+            th:text="${movie.director}"></span><br/>
+    </div>
+    <br/><br/><br/>
+
+    Opinia użytkownika:<br/>
+    <span th:text="${content}"></span>
+
     <br/><br/>
-    Podsumowanie oceny filmu "<span th:text="${movie.title}"></span>" w reżyserii <span th:text="${movie.director}"></span><br/>
+
+    Ocena:
+    <span th:text="${rating}"></span>/10
+
 </div>
-<br/><br/><br/>
-
-Opinia użytkownika:<br/>
-<span th:text="${content}"></span>
-
-<br/><br/>
-
-Ocena:
-<span th:text="${rating}"></span>/10
-
-
 </body>
 </html>

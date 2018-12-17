@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +11,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
+<div layout:fragment="content" th:remove="tag">
+
 <div class="detailsMovie">
     <br/><br/>
     Tytuł: <span th:text="${movie.title}"></span><br/>
@@ -42,6 +46,6 @@
     </span>
 
 </div>
-
+</div>
 </body>
 </html>

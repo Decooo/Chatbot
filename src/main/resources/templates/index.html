@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
 <head>
-    <meta charset="UTF-8">
     <title>ChatBot</title>
 </head>
 <body>
-Witamy. To jest ChatBot.
-<br/>
+<div layout:fragment="content" th:remove="tag">
+    <div class="center">
+        <h1>Witaj na stronie głównej!</h1>
+        <br/>
+        Witamy. To jest ChatBot.
 
+    </div>
+</div>
 </body>
 </html>

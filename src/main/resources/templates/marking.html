@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,28 +11,30 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="detailsMovie">
+        <br/><br/>
+        Oceniasz film "<span th:text="${movie.title}"></span>" w reżyserii <span
+            th:text="${movie.director}"></span><br/>
+    </div>
+    <br/><br/><br/>
 
-<div class="detailsMovie">
-    <br/><br/>
-    Oceniasz film "<span th:text="${movie.title}"></span>" w reżyserii <span th:text="${movie.director}"></span><br/>
+    <div class="messaging">
+        <img th:src="@{/img/bot.png}" alt="Avatar" style="width:100%;">
+        <p>Witaj! Dziękuje za chęć oceny filmu. Proszę aby Twoje odpowiedzi na zadawane pytania były pełnymi
+            zdaniami.</p>
+        <p>A więc zaczynajmy!</p>
+    </div>
+
+    <p th:utext="${codeHtml}"></p>
+
+    <div class="formMarking">
+        <form action="#" th:action="@{__${#httpServletRequest.requestURI}__/send}" th:object="${rating}" method="post">
+            <input type="text" th:field="*{contentRating}"/>
+
+            <input type="submit" value="Wyślij" class="btn btn-primary"/></br>
+        </form>
+    </div>
 </div>
-<br/><br/><br/>
-
-<div class="container">
-    <img th:src="@{/img/bot.png}"  alt="Avatar" style="width:100%;">
-    <p>Witaj! Dziękuje za chęć oceny filmu. Proszę aby Twoje odpowiedzi na zadawane pytania były pełnymi zdaniami.</p>
-    <p>A więc zaczynajmy!</p>
-</div>
-
-<p th:utext="${codeHtml}"></p>
-
-<div class="formMarking">
-    <form action="#" th:action="@{__${#httpServletRequest.requestURI}__/send}" th:object="${rating}" method="post">
-        <input type="text" th:field="*{contentRating}"/>
-
-        <input type="submit" value="Wyślij" class="btn btn-primary"/></br>
-    </form>
-</div>
-
 </body>
 </html>

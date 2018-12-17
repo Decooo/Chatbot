@@ -1,37 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Filmy</title>
 </head>
 <body>
-To jest lista wszystkich filmów!
-<br/><br/><br/>
+<div layout:fragment="content" th:remove="tag">
 
-<div class="moviesList">
-    <div th:if="${not #lists.isEmpty(movies)}">
-        <h2>Lista filmów</h2>
+    To jest lista wszystkich filmów!
+    <br/><br/><br/>
 
-        <table border="1">
-            <tr>
-                <td>L.p</td>
-                <td>Tytuł</td>
-                <td>Reżyser</td>
-                <td>Rok produkcji</td>
-                <td>Szczegóły</td>
-            </tr>
-            <tr th:each="movie,iterStat : ${movies}">
-                <td th:text="${iterStat.count}"></td>
-                <td th:text="${movie.title}"></td>
-                <td th:text="${movie.director}"></td>
-                <td th:text="${movie.productionYear}"></td>
-                <td><a th:href="@{/movie/list/__${movie.idMovie}__}">Więcej</a></td>
-            </tr>
-        </table>
+    <div class="moviesList">
+        <div th:if="${not #lists.isEmpty(movies)}">
+            <h2>Lista filmów</h2>
 
+            <table border="1">
+                <tr>
+                    <td>L.p</td>
+                    <td>Tytuł</td>
+                    <td>Reżyser</td>
+                    <td>Rok produkcji</td>
+                    <td>Szczegóły</td>
+                </tr>
+                <tr th:each="movie,iterStat : ${movies}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${movie.title}"></td>
+                    <td th:text="${movie.director}"></td>
+                    <td th:text="${movie.productionYear}"></td>
+                    <td><a th:href="@{/movie/list/__${movie.idMovie}__}">Więcej</a></td>
+                </tr>
+            </table>
+
+        </div>
     </div>
 </div>
-
 </body>
 </html>
