@@ -101,7 +101,14 @@ public class MovieService {
 		modelAndView.addObject("content", dialogProgress.getContent());
 
 		SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
-		modelAndView.addObject("rating", sentimentAnalysis.analysis(dialogProgress.getContent()));
+		double rate = sentimentAnalysis.analysis(dialogProgress.getContent());
+		rate = Math.round(rate * 100D) / 100D * 10;
+		modelAndView.addObject("rating", rate);
+		Rating rating = new Rating();
+		rating.setMovie(movie.get());
+		rating.setRating(rate);
+		rating.setContentRating(dialogProgress.getContent());
+		ratingRepository.save(rating);
 
 		return modelAndView;
 	}
