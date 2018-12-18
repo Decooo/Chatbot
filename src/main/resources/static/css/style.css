@@ -6,6 +6,10 @@ h2 {
     color: #78ab46;
 }
 
+.titleWork {
+    color: #007bff;
+}
+
 footer {
     position: fixed;
     height: 50px;
@@ -138,7 +142,7 @@ form > input[type = "submit"] {
     font-size: large;
     font-weight: bolder;
     font-style: italic;
-    color: #78ab46;
+    color: #000;
 }
 
 .bold{
