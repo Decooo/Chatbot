@@ -24,6 +24,14 @@ public class HtmlCode {
 				"</div>";
 	}
 
+	static String botCodeEmptyMarking(String message) {
+		return "<div class=\"messaging\">\n" +
+				"	 <img src=\"/img/bot.png\" alt=\"Avatar\" style=\"width:100%;\">\n" +
+				"    <p>Twoja odpowiedź jest pusta. Odpowiedaj na pytania pełnymi zdaniami.</p>\n" +
+				"    <p>" + message + "</p>\n" +
+				"</div>";
+	}
+
 	static String endConversation() {
 		return "<div class=\"messaging\">\n" +
 				"	 <img src=\"/img/bot.png\" alt=\"Avatar\" style=\"width:100%;\">\n" +

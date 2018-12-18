@@ -24,6 +24,8 @@ public class AnalysisDialog {
 			for (WitResponse aResponseList : responseList) {
 				calculateSumConfidence(sumConfidence, aResponseList);
 			}
+		} else if (messaging.trim().length() <= 0) {
+			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCodeEmptyMarking(randomQuestion(dialogProgress)));
 		} else {
 			WitResponse witResponse = doWitResponse(request.doRequest(messaging));
 			calculateSumConfidence(sumConfidence, witResponse);
@@ -31,7 +33,7 @@ public class AnalysisDialog {
 		String maxKey = getMaxKey(sumConfidence);
 
 		if (!maxKey.equalsIgnoreCase("") && sumConfidence.get(maxKey) > 0.5 && maxKey.equalsIgnoreCase(dialogProgress.getCurrentCategoryQuestions())) {
-			if(dialogProgress.getLengthOpinionOnSubject() + messaging.length() >= 120){
+			if (dialogProgress.getLengthOpinionOnSubject() + messaging.length() >= 120) {
 				setCompletedCategory(dialogProgress, maxKey);
 				dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
 				orLastCharContentIsDot(dialogProgress);
@@ -44,14 +46,14 @@ public class AnalysisDialog {
 					dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestion(dialogProgress)));
 				}
 				resetLengthOpinionOnSubject(dialogProgress);
-			}else{
+			} else {
 				dialogProgress.setLengthOpinionOnSubject(dialogProgress.getLengthOpinionOnSubject() + messaging.length());
 				dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
 				orLastCharContentIsDot(dialogProgress);
 				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestionAuxiliary(dialogProgress)));
 			}
 
-		} else
+		} else if (messaging.trim().length() > 0)
 			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCodeOffTopic(randomQuestion(dialogProgress)));
 	}
 
@@ -79,41 +81,6 @@ public class AnalysisDialog {
 			responseList.add(witResponse);
 		}
 		return responseList;
-	}
-
-	private static String getMaxKey(Map<String, Double> sumConfidence) {
-		if (sumConfidence.size() > 1) {
-			return Collections.max(sumConfidence.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
-		} else if (sumConfidence.size() == 1) return sumConfidence.entrySet().iterator().next().getKey();
-		else return "";
-	}
-
-	private static void orLastCharContentIsDot(DialogProgress dialogProgress) {
-		String content = dialogProgress.getContent().trim();
-		if (!content.endsWith(".") || !content.endsWith("?") || !content.endsWith("!"))
-			dialogProgress.setContent(content + ".");
-	}
-
-	private static void setCompletedCategory(DialogProgress dialogProgress, String maxKey) {
-		if (maxKey.equalsIgnoreCase("Gra_aktorska")) dialogProgress.setActing(true);
-		else if (maxKey.equalsIgnoreCase("fabula")) dialogProgress.setStory(true);
-		else if (maxKey.equalsIgnoreCase("efekty_specjalne")) dialogProgress.setSpecialEffects(true);
-	}
-
-	private static void calculateSumConfidence(Map<String, Double> sumConfidence, WitResponse witResponse) {
-		for (Entities entitie : witResponse.getEntitiesArrayList()) {
-			double sum = 0;
-			for (Value value : entitie.getValueArrayList()) {
-				sum += value.getConfidence();
-			}
-			if (!sumConfidence.containsKey(entitie.getName())) {
-				sumConfidence.put(entitie.getName(), sum);
-			} else sumConfidence.replace(entitie.getName(), sumConfidence.get(entitie.getName()) + sum);
-		}
-	}
-
-	private static boolean isEndConversation(DialogProgress dialogProgress) {
-		return dialogProgress.getActing() && dialogProgress.getStory() && dialogProgress.getSpecialEffects();
 	}
 
 	private static ArrayList<String> doSentenceList(String messaging) {
@@ -169,6 +136,41 @@ public class AnalysisDialog {
 
 		witResponse.setEntitiesArrayList(entitiesArrayList);
 		return witResponse;
+	}
+
+	private static String getMaxKey(Map<String, Double> sumConfidence) {
+		if (sumConfidence.size() > 1) {
+			return Collections.max(sumConfidence.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
+		} else if (sumConfidence.size() == 1) return sumConfidence.entrySet().iterator().next().getKey();
+		else return "";
+	}
+
+	private static void orLastCharContentIsDot(DialogProgress dialogProgress) {
+		String content = dialogProgress.getContent().trim();
+		if (!content.endsWith(".") || !content.endsWith("?") || !content.endsWith("!"))
+			dialogProgress.setContent(content + ".");
+	}
+
+	private static void setCompletedCategory(DialogProgress dialogProgress, String maxKey) {
+		if (maxKey.equalsIgnoreCase("Gra_aktorska")) dialogProgress.setActing(true);
+		else if (maxKey.equalsIgnoreCase("fabula")) dialogProgress.setStory(true);
+		else if (maxKey.equalsIgnoreCase("efekty_specjalne")) dialogProgress.setSpecialEffects(true);
+	}
+
+	private static void calculateSumConfidence(Map<String, Double> sumConfidence, WitResponse witResponse) {
+		for (Entities entitie : witResponse.getEntitiesArrayList()) {
+			double sum = 0;
+			for (Value value : entitie.getValueArrayList()) {
+				sum += value.getConfidence();
+			}
+			if (!sumConfidence.containsKey(entitie.getName())) {
+				sumConfidence.put(entitie.getName(), sum);
+			} else sumConfidence.replace(entitie.getName(), sumConfidence.get(entitie.getName()) + sum);
+		}
+	}
+
+	private static boolean isEndConversation(DialogProgress dialogProgress) {
+		return dialogProgress.getActing() && dialogProgress.getStory() && dialogProgress.getSpecialEffects();
 	}
 
 	private static String randomQuestion(DialogProgress dialogProgress) throws NotFoundException {

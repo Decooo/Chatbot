@@ -1,5 +1,6 @@
 package com.jakub.chatbot.service;
 
+import com.jakub.chatbot.entity.Movie;
 import com.jakub.chatbot.entity.Rating;
 import com.jakub.chatbot.exceptions.NotFoundException;
 import com.jakub.chatbot.repository.MovieRepository;
@@ -103,13 +104,18 @@ public class MovieService {
 		SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
 		double rate = sentimentAnalysis.analysis(dialogProgress.getContent());
 		rate = Math.round(rate * 100D) / 100D * 10;
+		saveRatingToDB(movie.get(), dialogProgress, rate);
+
 		modelAndView.addObject("rating", rate);
+
+		return modelAndView;
+	}
+
+	private void saveRatingToDB(Movie movie, DialogProgress dialogProgress, double rate) {
 		Rating rating = new Rating();
-		rating.setMovie(movie.get());
+		rating.setMovie(movie);
 		rating.setRating(rate);
 		rating.setContentRating(dialogProgress.getContent());
 		ratingRepository.save(rating);
-
-		return modelAndView;
 	}
 }
