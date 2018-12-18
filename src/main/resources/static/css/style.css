@@ -2,6 +2,10 @@ h1 {
     color: #78ab46;
 }
 
+h2 {
+    color: #78ab46;
+}
+
 footer {
     position: fixed;
     height: 50px;
@@ -73,6 +77,13 @@ footer a:hover {
     margin: auto;
 }
 
+.btnStart {
+    text-align: center;
+    margin: auto;
+    font-size: larger;
+    text-transform: uppercase;
+}
+
 .formMarking {
     text-align: center;
 }
@@ -119,6 +130,23 @@ form > input[type = "submit"] {
     margin-right: 0;
 }
 
+.abstract{
+    font-style: italic;
+}
+
+.author{
+    font-size: large;
+    font-weight: bolder;
+    font-style: italic;
+    color: #78ab46;
+}
+
+.bold{
+    font-weight: bolder;
+    font-size: large;
+}
+
 #title-app{
     font-weight: bold;
+    color: #78ab46;
 }
