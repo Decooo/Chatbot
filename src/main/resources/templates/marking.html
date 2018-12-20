@@ -13,11 +13,11 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <div class="detailsMovie">
-        <br/><br/>
-        Oceniasz film "<span th:text="${movie.title}"></span>" w reżyserii <span
+        <br/>
+        Oceniasz film "<span id="detailsMovie2" th:text="${movie.title}"></span>" w reżyserii <span
             th:text="${movie.director}"></span><br/>
     </div>
-    <br/><br/><br/>
+    <br/><br/>
 
     <div class="messaging">
         <img th:src="@{/img/bot.png}" alt="Avatar" style="width:100%;">
@@ -28,11 +28,25 @@
 
     <p th:utext="${codeHtml}"></p>
 
+    <script type="text/javascript">
+        function init() {
+            $('textarea').each(function () {
+                 this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+            }).on('input', function () {
+                this.style.height = '38px';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        }
+
+        window.onload = init;
+    </script>
+
     <div class="formMarking">
         <form action="#" th:action="@{__${#httpServletRequest.requestURI}__/send}" th:object="${rating}" method="post">
-            <input type="text" th:field="*{contentRating}"/>
+            <!--<input id="contentMarking" type="text" th:field="*{contentRating}"/>-->
+            <textarea id="contentMarking" th:field="*{contentRating}" cols="120" wrap="soft" style="overflow:hidden;"/>
 
-            <input type="submit" value="Wyślij" class="btn btn-primary"/></br>
+            <input type="submit" value="Wyślij" class="btn btn-primary" id="btnSend"/></br>
         </form>
     </div>
 </div>

@@ -13,26 +13,26 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
 
-<div class="detailsMovie">
-    <br/><br/>
-    Tytuł: <span th:text="${movie.title}"></span><br/>
-    Reżyser: <span th:text="${movie.director}"></span><br/>
-    Rok produkcji: <span th:text="${movie.productionYear}"></span><br/><br/>
-</div>
-<br/>
-
-<div class="btnRating">
-    <a th:href="@{__${#httpServletRequest.requestURI}__/marking}" class="btn btn-warning btn-lg" role="button"
-       aria-disabled="true">Oceń film</a>
-</div>
-
-<br/><br/>
-<div class="comments">
-    <h2>Dodane oceny</h2>
-    <hr>
+    <div class="detailsMovie">
+        <br/><br/>
+        Tytuł: <span id="detailsMovie" th:text="${movie.title}"></span><br/>
+        Reżyser: <span id="detailsMovie" th:text="${movie.director}"></span><br/>
+        Rok produkcji: <span id="detailsMovie" th:text="${movie.productionYear}"></span><br/><br/>
+    </div>
     <br/>
 
-    <span th:each="rating : ${ratings}">
+    <div class="btnRating">
+        <a th:href="@{__${#httpServletRequest.requestURI}__/marking}" class="btn btn-warning btn-lg" role="button"
+           aria-disabled="true">Oceń film</a>
+    </div>
+
+    <br/><br/>
+    <div class="comments">
+        <h2>Dodane oceny</h2>
+        <hr>
+        <br/>
+
+        <span th:each="rating : ${ratings}">
         <div class="comment">
             <div class="rating">
                 Film został oceniony na: <span th:text="${rating.rating}"></span>/10
@@ -45,7 +45,7 @@
         <br/><hr><br/>
     </span>
 
-</div>
+    </div>
 </div>
 </body>
 </html>
