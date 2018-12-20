@@ -103,7 +103,6 @@ public class MovieService {
 
 		SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
 		double rate = sentimentAnalysis.analysis(dialogProgress.getContent());
-		rate = Math.round(rate * 100D) / 100D * 10;
 		saveRatingToDB(movie.get(), dialogProgress, rate);
 
 		modelAndView.addObject("rating", rate);

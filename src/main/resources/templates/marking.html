@@ -31,11 +31,12 @@
     <script type="text/javascript">
         function init() {
             $('textarea').each(function () {
-                 this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+                this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
             }).on('input', function () {
                 this.style.height = '38px';
                 this.style.height = (this.scrollHeight) + 'px';
             });
+            window.scrollTo(0,document.body.scrollHeight);
         }
 
         window.onload = init;
@@ -43,7 +44,6 @@
 
     <div class="formMarking">
         <form action="#" th:action="@{__${#httpServletRequest.requestURI}__/send}" th:object="${rating}" method="post">
-            <!--<input id="contentMarking" type="text" th:field="*{contentRating}"/>-->
             <textarea id="contentMarking" th:field="*{contentRating}" cols="120" wrap="soft" style="overflow:hidden;"/>
 
             <input type="submit" value="Wyślij" class="btn btn-primary" id="btnSend"/></br>

@@ -14,20 +14,22 @@
 <div layout:fragment="content" th:remove="tag">
 
     <div class="detailsMovie">
-        <br/><br/>
-        Podsumowanie oceny filmu "<span th:text="${movie.title}"></span>" w reżyserii <span
+        <br/>
+        Podsumowanie oceny filmu "<span id="detailsMovie2" th:text="${movie.title}"></span>" w reżyserii <span
             th:text="${movie.director}"></span><br/>
     </div>
-    <br/><br/><br/>
+    <br/>
+    <div class="summaryMarking">
+        <span id="summaryDescription">Dziękujemy za Twoją opinię o filmie. Poniżej możesz zobaczyć jaką ocene filmu wystawił algorytm na podstawie Twojej opinii, oraz zobaczyć w jaki sposób ta ocena została wystawiona.</span>
 
-    Opinia użytkownika:<br/>
-    <span th:text="${content}"></span>
+        <br><br/>
+        <span id="titleOpinion">Twoja opinia:</span><br/>
+        <span id="opinion" th:text="${content}"></span>
 
-    <br/><br/>
+        <br/><br/>
 
-    Ocena:
-    <span th:text="${rating}"></span>/10
-
+        <span id="titleRating">Wystawiona ocena filmu: <span id="rating" th:text="${rating}"></span>/10</span>
+    </div>
 </div>
 </body>
 </html>

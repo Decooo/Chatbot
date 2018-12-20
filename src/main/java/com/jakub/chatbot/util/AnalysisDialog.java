@@ -65,7 +65,7 @@ public class AnalysisDialog {
 			dialogProgress.setNumberCurrentQuestionAuxiliary(0);
 
 		dialogProgress.setNumberCurrentQuestionAuxiliary(dialogProgress.getNumberCurrentQuestionAuxiliary() + 1);
-		return questionsList.get(dialogProgress.getNumberCurrentQuestionAuxiliary());
+		return questionsList.get(dialogProgress.getNumberCurrentQuestionAuxiliary() - 1);
 	}
 
 	private static void resetLengthOpinionOnSubject(DialogProgress dialogProgress) {
@@ -187,7 +187,7 @@ public class AnalysisDialog {
 			dialogProgress.setNumberCurrentQuestions(0);
 
 		dialogProgress.setNumberCurrentQuestions(dialogProgress.getNumberCurrentQuestions() + 1);
-		return questionsList.get(dialogProgress.getNumberCurrentQuestions());
+		return questionsList.get(dialogProgress.getNumberCurrentQuestions() - 1);
 	}
 
 	private static void randomCategoryQuestion(DialogProgress dialogProgress) throws NotFoundException {
