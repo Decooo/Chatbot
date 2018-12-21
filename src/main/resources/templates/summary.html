@@ -24,11 +24,58 @@
 
         <br><br/>
         <span id="titleOpinion">Twoja opinia:</span><br/>
-        <span id="opinion" th:text="${content}"></span>
+        <span id="opinion" th:text="${dialogProgress.content}"></span>
 
         <br/><br/>
 
         <span id="titleRating">Wystawiona ocena filmu: <span id="rating" th:text="${rating}"></span>/10</span>
+        <br/>
+        <hr id="line">
+        <span id="titleAnalysis">Analiza algorytmu</span>
+        <br/>
+        <span id="summaryDescription">W pierwszym kroku analizy potrzebowaliśmy Twojej opinii o filmie. Kompletna opinia zawiera odpowiedzi liczące minimum 120 znaków na 3 kategorie w których oceniamy film.
+        Te kategorie to: gra aktorska, fabuła filmu oraz efekty specjalne (scenografia, montaż, muzyka, efekty wizualne). Przetwarzanie odpowiedzi wraz z analizą czy Twoja odpowiedź jest na temat zostało
+        wykonane przy wykorzystaniu platformy wit.ai która oferuję narzędzie do przetwarzania języka naturalnego.</span><br/><br/>
+        Poniżej przedstawiono do której kategorii oceny filmu została przypisana każda z części Twojej
+        wypowiedzi.<br/><br/>
+
+        <div class="confidenceTable">
+            <div class="table100 ver1 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                        <tr class="row100 head">
+                            <th class="column1Summary">Kategoria</th>
+                            <th class="column2Summary">Cześć wypowiedzi</th>
+                            <th class="column3Summary">Klasyfikacja do kategorii</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="table100-body">
+                    <table>
+                        <tbody>
+                        <tr class="row100 body">
+                            <td class="column1Summary">Fabuła</td>
+                            <td class="column2Summary" th:text="${dialogProgress.opinionStory}"></td>
+                            <td class="column3Summary" th:utext="${dialogProgress.confidenceStory}"></td>
+                        </tr>
+                        <tr class="row100 body">
+                            <td class="column1Summary">Gra aktorska</td>
+                            <td class="column2Summary" th:text="${dialogProgress.opinionActing}"></td>
+                            <td class="column3Summary" th:utext="${dialogProgress.confidenceActing}"></td>
+                        </tr>
+                        <tr class="row100 body">
+                            <td class="column1Summary">Efekty specjalne</td>
+                            <td class="column2Summary" th:text="${dialogProgress.opinionSpecialEffects}"></td>
+                            <td class="column3Summary" th:utext="${dialogProgress.confidenceSpecialEffects}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

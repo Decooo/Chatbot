@@ -52,6 +52,19 @@ th, td {
     width: 10%;
 }
 
+.column1Summary {
+    width: 20%;
+    padding-left: 5px;
+}
+
+.column2Summary {
+    width: 55%;
+}
+
+.column3Summary {
+    width: 25%;
+}
+
 .table100-head th {
     padding-top: 18px;
     padding-bottom: 18px;

@@ -21,6 +21,14 @@ public class DialogProgress {
 	private int lengthOpinionOnSubject = 0;
 	private int numberCurrentQuestionAuxiliary = -1;
 
+	//variable - show results
+	private String opinionActing = "";
+	private String opinionStory = "";
+	private String opinionSpecialEffects = "";
+	private String confidenceActing = "";
+	private String confidenceStory = "";
+	private String confidenceSpecialEffects = "";
+
 	public DialogProgress() {
 		doQuestionsActingList();
 		doQuestionsStoryList();
@@ -62,6 +70,54 @@ public class DialogProgress {
 		questionsAuxiliary.add("Czy mogłbyś powiedzieć coś więcej na ten temat?");
 		questionsAuxiliary.add("Rozbuduj swoją odpowiedz");
 		Collections.shuffle(questionsAuxiliary);
+	}
+
+	public String getConfidenceActing() {
+		return confidenceActing;
+	}
+
+	public void setConfidenceActing(String confidenceActing) {
+		this.confidenceActing = confidenceActing;
+	}
+
+	public String getConfidenceStory() {
+		return confidenceStory;
+	}
+
+	public void setConfidenceStory(String confidenceStory) {
+		this.confidenceStory = confidenceStory;
+	}
+
+	public String getConfidenceSpecialEffects() {
+		return confidenceSpecialEffects;
+	}
+
+	public void setConfidenceSpecialEffects(String confidenceSpecialEffects) {
+		this.confidenceSpecialEffects = confidenceSpecialEffects;
+	}
+
+	public String getOpinionActing() {
+		return opinionActing;
+	}
+
+	public void setOpinionActing(String opinionActing) {
+		this.opinionActing = opinionActing;
+	}
+
+	public String getOpinionStory() {
+		return opinionStory;
+	}
+
+	public void setOpinionStory(String opinionStory) {
+		this.opinionStory = opinionStory;
+	}
+
+	public String getOpinionSpecialEffects() {
+		return opinionSpecialEffects;
+	}
+
+	public void setOpinionSpecialEffects(String opinionSpecialEffects) {
+		this.opinionSpecialEffects = opinionSpecialEffects;
 	}
 
 	public ArrayList<String> getQuestionsAuxiliary() {

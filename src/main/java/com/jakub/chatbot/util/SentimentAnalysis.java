@@ -43,7 +43,7 @@ public class SentimentAnalysis {
 		System.out.println("positivePoints = " + positivePoints);
 
 		double result  = (positivePoints / (negativePoints * -1 + positivePoints));
-		return Math.round(result * 100D) / 100D * 10;
+		return Math.round(result * 100.00) / 100.00 * 10;
 	}
 
 	private int getValue(String s) {

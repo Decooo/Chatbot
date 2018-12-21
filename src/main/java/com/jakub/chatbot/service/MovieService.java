@@ -99,7 +99,7 @@ public class MovieService {
 		HttpSession session = request.getSession(true);
 		DialogProgress dialogProgress = (DialogProgress) session.getAttribute("dialogProgress");
 
-		modelAndView.addObject("content", dialogProgress.getContent());
+		modelAndView.addObject("dialogProgress", dialogProgress);
 
 		SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
 		double rate = sentimentAnalysis.analysis(dialogProgress.getContent());

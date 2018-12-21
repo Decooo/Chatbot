@@ -35,6 +35,7 @@ public class AnalysisDialog {
 		if (!maxKey.equalsIgnoreCase("") && sumConfidence.get(maxKey) > 0.5 && maxKey.equalsIgnoreCase(dialogProgress.getCurrentCategoryQuestions())) {
 			if (dialogProgress.getLengthOpinionOnSubject() + messaging.length() >= 120) {
 				setCompletedCategory(dialogProgress, maxKey);
+				setVariablesToShowResult(dialogProgress, maxKey, messaging, sumConfidence);
 				dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
 				orLastCharContentIsDot(dialogProgress);
 
@@ -50,11 +51,42 @@ public class AnalysisDialog {
 				dialogProgress.setLengthOpinionOnSubject(dialogProgress.getLengthOpinionOnSubject() + messaging.length());
 				dialogProgress.setContent(dialogProgress.getContent() + " " + messaging.trim());
 				orLastCharContentIsDot(dialogProgress);
+				setVariablesToShowResult(dialogProgress, maxKey, messaging, sumConfidence);
 				dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCode(randomQuestionAuxiliary(dialogProgress)));
 			}
 
 		} else if (messaging.trim().length() > 0)
 			dialogProgress.setCodeHtml(dialogProgress.getCodeHtml() + HtmlCode.botCodeOffTopic(randomQuestion(dialogProgress)));
+	}
+
+	private static void setVariablesToShowResult(DialogProgress dialogProgress, String maxKey, String messaging, Map<String, Double> sumConfidence) {
+		if (maxKey.equalsIgnoreCase("Gra_aktorska")) {
+			dialogProgress.setOpinionActing(dialogProgress.getOpinionActing() + " " + messaging);
+			dialogProgress.setConfidenceActing(generateStringConfidence(sumConfidence));
+		} else if (maxKey.equalsIgnoreCase("fabula")) {
+			dialogProgress.setOpinionStory(dialogProgress.getOpinionStory() + " " + messaging);
+			dialogProgress.setConfidenceStory(generateStringConfidence(sumConfidence));
+		} else if (maxKey.equalsIgnoreCase("efekty_specjalne")) {
+			dialogProgress.setOpinionSpecialEffects(dialogProgress.getOpinionSpecialEffects() + " " + messaging);
+			dialogProgress.setConfidenceSpecialEffects(generateStringConfidence(sumConfidence));
+		}
+	}
+
+	private static String generateStringConfidence(Map<String, Double> sumConfidence) {
+		double sum = sumConfidence.values().stream().mapToDouble(Double::doubleValue).sum();
+		double acting = sumConfidence.getOrDefault("Gra_aktorska", 0.0) / sum;
+		acting = Math.round(acting * 100.00) * 100.00 / 100.00;
+		double story = sumConfidence.getOrDefault("fabula", 0.0) / sum;
+		story = Math.round(story * 100.00) * 100.00 / 100.00;
+		double specialEffects = sumConfidence.getOrDefault("efekty_specjalne", 0.0) / sum;
+		specialEffects = Math.round(specialEffects * 100.00) * 100.00 / 100.00;
+
+		StringBuilder confidence = new StringBuilder();
+		confidence.append("Gra aktorska: ").append(acting).append("%").append(" <br/>")
+				.append("Fabuła: ").append(story).append("%").append(" <br/>")
+				.append("Efekty specjalne: ").append(specialEffects).append("%");
+		System.out.println("confidence.toString() = " + confidence.toString());
+		return confidence.toString();
 	}
 
 	private static String randomQuestionAuxiliary(DialogProgress dialogProgress) throws NotFoundException {
