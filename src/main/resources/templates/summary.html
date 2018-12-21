@@ -76,6 +76,71 @@
                 </div>
             </div>
         </div>
+        <br/><br/>
+        <span id="summaryDescription">
+            W kolejnym kroku pełna ocena zostaje poddana analizie emocjonalnej. Na tej podstawie zostaje wystawiona ocena filmu w skali od 0 do 10 gdzie:<br>
+            0 - bardzo negatywna opinia o filmie<br/>
+            5 - opinia neutralna<br/>
+            10 - bardzo pozytywna opinia<br/><br/>
+
+            <span id="bold">Ogólne kroki analizy emocjonalnej:</span><br/>
+            1. Usunięcie z opinii elementów niemożliwych do poddania ocenie<br/>
+            2. Podzielenie opinii na liste zdań<br/>
+            3. Podzielenie zdań na liste słów<br/>
+            4. Sprowadznie każdego wyrazu do formy podstawowej oraz określenie jego części mowy za pomocą biblioteki Morfologik<br/>
+            5. Stworzenie listy wyrażeń w zdaniach np. (przysłówek-czasownik, przymiotnik-rzeczownik)<br/>
+            6. Ocena anotacji emocjonalnej każdego wyrażenia przy użyciu słownika anotacji emocjonalnej stworzonego przez Słowosieć<br/>
+            7. Obliczenie stosunku pozytywnych wyrażeń do negatywnych<br/>
+            8. Wystawienie oceny końcowej<br/><br/>
+
+            Poniżej przedstawiono wykaz wyrażeń (sprowadzonych do formy podstawowej) które algorytm odnalazł w Twojej ocenie. Do każdego z wyrazów wyrażenia przyporządkowano ocene emocjonalną,
+            na końcu wystawiono ocenę końcową każdego wyrażenia. Oceny zawierają się w skali od -2 do 2 gdzie:<br/>
+            -2 : bardzo negatywny<br/>
+            -1 : słabo negatywny<br/>
+            0 : neutralny - brak anotacji emocjonalnej<br/>
+            1 : słabo pozytywny<br/>
+            2 : mocno pozytywny<br/><br/>
+        </span><br/>
+
+        <div class="phraseTable">
+            <div class="table100 ver1 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                        <tr class="row100 head">
+                            <th class="column1Phrase">Wyrażenie</th>
+                            <th class="column2Phrase">Ocena 1 wyrazu</th>
+                            <th class="column3Phrase">Ocena 2 wyrazu</th>
+                            <th class="column4Phrase">Ocena całego wyrażenia</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="table100-body">
+                    <table>
+                        <tbody>
+                        <tr class="row100 body" th:each="phrase : ${phrases}">
+                            <td class="column1Phrase" th:text="${phrase.phrase}"></td>
+                            <td class="column2Phrase" th:text="${phrase.rate1Word}"></td>
+                            <td class="column3Phrase" th:text="${phrase.rate2Word}"></td>
+                            <td class="column4Phrase" th:text="${phrase.ratePhrase}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <span id="summaryDescription">
+            <span id="bold">Opinia otrzymała:</span><br/>
+            <span th:text="${positivePoints}"></span> punktów pozytywnych<br/>
+            <span th:text="${negativePoints}"></span> punktów negatywnych<br/><br/>
+
+            <span id="titleRating">Wystawiona na podstawie punktów ocena to : <span id="rating"
+                                                                                     th:text="${rating}"></span>/10</span>
+        </span>
+        <div id="marginFooter"></div>
     </div>
 </div>
 </body>

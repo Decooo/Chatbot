@@ -85,7 +85,6 @@ public class AnalysisDialog {
 		confidence.append("Gra aktorska: ").append(acting).append("%").append(" <br/>")
 				.append("Fabuła: ").append(story).append("%").append(" <br/>")
 				.append("Efekty specjalne: ").append(specialEffects).append("%");
-		System.out.println("confidence.toString() = " + confidence.toString());
 		return confidence.toString();
 	}
 

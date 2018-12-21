@@ -106,6 +106,9 @@ public class MovieService {
 		saveRatingToDB(movie.get(), dialogProgress, rate);
 
 		modelAndView.addObject("rating", rate);
+		modelAndView.addObject("phrases", SentimentAnalysis.getPhraseEmotionsList());
+		modelAndView.addObject("positivePoints", SentimentAnalysis.getPositivePoints());
+		modelAndView.addObject("negativePoints", SentimentAnalysis.getNegativePoints());
 
 		return modelAndView;
 	}

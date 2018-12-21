@@ -13,6 +13,45 @@ import java.util.HashMap;
 public class SentimentAnalysis {
 
 	private static ArrayList<String> phraseList = new ArrayList<>();
+	private static ArrayList<PhraseEmotions> phraseEmotionsList = new ArrayList<>();
+	private static double positivePoints = 0;
+	private static double negativePoints = 0;
+
+	public static double getPositivePoints() {
+		return positivePoints;
+	}
+
+	public static void setPositivePoints(double positivePoints) {
+		SentimentAnalysis.positivePoints = positivePoints;
+	}
+
+	public static double getNegativePoints() {
+		return negativePoints;
+	}
+
+	public static void setNegativePoints(int negativePoints) {
+		SentimentAnalysis.negativePoints = negativePoints;
+	}
+
+	public static void setNegativePoints(double negativePoints) {
+		SentimentAnalysis.negativePoints = negativePoints;
+	}
+
+	public static ArrayList<String> getPhraseList() {
+		return phraseList;
+	}
+
+	public static void setPhraseList(ArrayList<String> phraseList) {
+		SentimentAnalysis.phraseList = phraseList;
+	}
+
+	public static ArrayList<PhraseEmotions> getPhraseEmotionsList() {
+		return phraseEmotionsList;
+	}
+
+	public static void setPhraseEmotionsList(ArrayList<PhraseEmotions> phraseEmotionsList) {
+		SentimentAnalysis.phraseEmotionsList = phraseEmotionsList;
+	}
 
 	public double analysis(String opinion) throws IOException {
 		var wordList = separationWordInSentences(opinion);
@@ -36,14 +75,25 @@ public class SentimentAnalysis {
 					positivePoints += (valueWord1 + valueWord2);
 				} else negativePoints += (valueWord1 + valueWord2);
 			}
-			System.out.println(pairs[0] + " " + pairs[1] + " | " + valueWord1 + " : " + valueWord2);
+			PhraseEmotions phraseEmotions = new PhraseEmotions();
+			phraseEmotions.setPhrase(pairs[0] + " " + pairs[1]);
+			phraseEmotions.setRate1Word(valueWord1);
+			phraseEmotions.setRate2Word(valueWord2);
+			phraseEmotions.setRatePhrase(getRatePhrase(valueWord1, valueWord2));
+			phraseEmotionsList.add(phraseEmotions);
 		}
 
-		System.out.println("negativePoints = " + negativePoints);
-		System.out.println("positivePoints = " + positivePoints);
+		this.negativePoints = negativePoints;
+		this.positivePoints = positivePoints;
 
-		double result  = (positivePoints / (negativePoints * -1 + positivePoints));
-		return Math.round(result * 100.00) / 100.00 * 10;
+		double result = (positivePoints / (negativePoints * -1 + positivePoints));
+		return Math.round(result * 100.00) / 100.00 * 10.00;
+	}
+
+	private String getRatePhrase(int valueWord1, int valueWord2) {
+		if ((valueWord1 == 0 && valueWord2 == 0) || (valueWord1 * valueWord2) < 0)
+			return "Neutralne";
+		else return String.valueOf(valueWord1 + valueWord2);
 	}
 
 	private int getValue(String s) {
