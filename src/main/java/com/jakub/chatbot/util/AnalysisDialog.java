@@ -96,7 +96,7 @@ public class AnalysisDialog {
 			dialogProgress.setNumberCurrentQuestionAuxiliary(0);
 
 		dialogProgress.setNumberCurrentQuestionAuxiliary(dialogProgress.getNumberCurrentQuestionAuxiliary() + 1);
-		return questionsList.get(dialogProgress.getNumberCurrentQuestionAuxiliary() - 1);
+		return questionsList.get(dialogProgress.getNumberCurrentQuestionAuxiliary());
 	}
 
 	private static void resetLengthOpinionOnSubject(DialogProgress dialogProgress) {
