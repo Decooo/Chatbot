@@ -178,7 +178,9 @@ public class AnalysisDialog {
 
 	private static void orLastCharContentIsDot(DialogProgress dialogProgress) {
 		String content = dialogProgress.getContent().trim();
-		if (!content.endsWith(".") || !content.endsWith("?") || !content.endsWith("!"))
+		if (content.codePointAt(content.length() - 1) != 46 &&
+				content.codePointAt(content.length() - 1) != 33 &&
+				content.codePointAt(content.length() -1) != 63)
 			dialogProgress.setContent(content + ".");
 	}
 
@@ -189,14 +191,14 @@ public class AnalysisDialog {
 	}
 
 	private static void calculateSumConfidence(Map<String, Double> sumConfidence, WitResponse witResponse) {
-		for (Entities entitie : witResponse.getEntitiesArrayList()) {
+		for (Entities entity : witResponse.getEntitiesArrayList()) {
 			double sum = 0;
-			for (Value value : entitie.getValueArrayList()) {
+			for (Value value : entity.getValueArrayList()) {
 				sum += value.getConfidence();
 			}
-			if (!sumConfidence.containsKey(entitie.getName())) {
-				sumConfidence.put(entitie.getName(), sum);
-			} else sumConfidence.replace(entitie.getName(), sumConfidence.get(entitie.getName()) + sum);
+			if (!sumConfidence.containsKey(entity.getName())) {
+				sumConfidence.put(entity.getName(), sum);
+			} else sumConfidence.replace(entity.getName(), sumConfidence.get(entity.getName()) + sum);
 		}
 	}
 

@@ -17,15 +17,15 @@ public class WitRequest {
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", "Bearer AUM4D36AW3YRXDCUDETHPT7LC4Y4SOXM");
-
+			//Sprawdzenie odpowiedzi z kodem błędu
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ conn.getResponseCode());
 			}
-
+			//Odczytanie treści odpowiedzi
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					(conn.getInputStream())));
-
+			//Złożenie odpowiedzi w całość
 			String temp;
 			StringBuilder response = new StringBuilder();
 			while ((temp = br.readLine()) != null) {
