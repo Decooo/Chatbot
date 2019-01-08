@@ -175,19 +175,22 @@ public class SentimentAnalysis {
 		}
 		// First ADV, ADJ, NOT SUBST/GER
 		for (int i = 0; i < tags.size() - 2; ++i) {
-			if ("adv".equals(tags.get(i)) && "adj".equals(tags.get(i + 1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+			if ("adv".equals(tags.get(i)) && "adj".equals(tags.get(i + 1).substring(0, 3))
+					&& (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
 				phraseList.add(words.get(i) + " " + words.get(i + 1));
 			}
 		}
 		// First ADJ, ADJ, NOT SUBST/GER
 		for (int i = 0; i < tags.size() - 2; ++i) {
-			if ("adj".equals(tags.get(i).substring(0, 3)) && "adj".equals(tags.get(i + 1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+			if ("adj".equals(tags.get(i).substring(0, 3)) && "adj".equals(tags.get(i + 1).substring(0, 3))
+					&& (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
 				phraseList.add(words.get(i) + " " + words.get(i + 1));
 			}
 		}
 		// First SUBST/GER, ADJ, NOT SUBST/GER
 		for (int i = 0; i < tags.size() - 2; ++i) {
-			if (("subst".equals(tags.get(i)) || "ger".equals(tags.get(i))) && "adj".equals(tags.get(i + 1).substring(0, 3)) && (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
+			if (("subst".equals(tags.get(i)) || "ger".equals(tags.get(i))) && "adj".equals(tags.get(i + 1).substring(0, 3))
+					&& (!("subst".equals(tags.get(i + 2))) && !("ger".equals(tags.get(i + 2))))) {
 				phraseList.add(words.get(i) + " " + words.get(i + 1));
 			}
 		}
