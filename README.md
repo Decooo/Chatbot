@@ -1,5 +1,5 @@
-# Implementacja aplikacji Chatbot reagującej na emocje rozmówcy
-# A chat bot application that reacts to the emotions of the interlocutor - design and implementation
+### Implementacja aplikacji Chatbot reagującej na emocje rozmówcy
+### A chat bot application that reacts to the emotions of the interlocutor - design and implementation
 Engineering work<br>
 kontakt: kusnierzjakub@gmail.com
 
